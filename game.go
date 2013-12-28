@@ -7,7 +7,7 @@ import (
 
 type Game struct {
 	gridOriginal [][]bool
-	Grid [][]bool
+	Grid         [][]bool
 }
 
 func New(linhas, colunas int) *Game {
@@ -15,11 +15,7 @@ func New(linhas, colunas int) *Game {
 	game.Grid = make([][]bool, linhas)
 	for i := range game.Grid {
 		game.Grid[i] = make([]bool, colunas)
-	}	
-	game.gridOriginal = make([][]bool, linhas)
-	for i := range game.gridOriginal {
-		game.gridOriginal[i] = make([]bool, colunas)
-	}		
+	}
 	return game
 }
 
@@ -28,16 +24,18 @@ func (game *Game) Seed(seed [][]bool) {
 }
 
 func (game *Game) copiarGrid() {
+	game.gridOriginal = make([][]bool, len(game.Grid))
 	for i, linha := range game.Grid {
-			for j, valor := range linha {
-				game.gridOriginal[i][j] = valor
-			}
-		}	
+		game.gridOriginal[i] = make([]bool, len(linha))
+		for j, valor := range linha {
+			game.gridOriginal[i][j] = valor
+		}
+	}
 }
 
 func (game *Game) Step() {
 	game.copiarGrid()
-	
+
 	for linha := 0; linha < len(game.Grid); linha++ {
 		for coluna := 0; coluna < len(game.Grid[linha]); coluna++ {
 			game.avancar(linha, coluna)
@@ -57,18 +55,18 @@ func (game *Game) avancar(linha, coluna int) {
 
 func (game *Game) quantidadeVizinhos(linha, coluna int) int {
 	vizinhos := 0
-	for linhaAtual := linha -1; linhaAtual <= linha+1; linhaAtual++ {
+	for linhaAtual := linha - 1; linhaAtual <= linha+1; linhaAtual++ {
 		if linhaAtual < 0 || linhaAtual >= len(game.gridOriginal) {
 			continue
-		}		
+		}
 		vizinhos += game.obterVizinhos(linhaAtual, linha, coluna)
-	}	
+	}
 	return vizinhos
 }
 
 func (game *Game) obterVizinhos(linhaAtual, linha, coluna int) int {
 	vizinhos := 0
-	for colunaAtual := coluna -1; colunaAtual <= coluna +1; colunaAtual++ {
+	for colunaAtual := coluna - 1; colunaAtual <= coluna+1; colunaAtual++ {
 		if colunaAtual < 0 || colunaAtual >= len(game.gridOriginal[linhaAtual]) {
 			continue
 		}
@@ -100,22 +98,22 @@ func (game *Game) ToString() string {
 }
 
 func (game *Game) RandomSeed() {
-	rand.Seed(time.Now().UTC().UnixNano())	
+	rand.Seed(time.Now().UTC().UnixNano())
 	for i := 0; i < len(game.Grid); i++ {
 		for j := 0; j < len(game.Grid[i]); j++ {
 			game.Grid[i][j] = rand.Intn(2) == 1
-		}		
+		}
 	}
 }
 
-func main () {
+func main() {
 	game := New(25, 25)
 	game.RandomSeed()
-	for {		
+	for {
 		print("\033[2J")
 		game.Step()
 		print(game.ToString())
 		time.Sleep(1000 * time.Millisecond)
-	}	
+	}
 
 }
