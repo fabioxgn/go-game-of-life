@@ -27,9 +27,7 @@ func (game *Game) copiarGrid() {
 	game.gridOriginal = make([][]bool, len(game.Grid))
 	for i, linha := range game.Grid {
 		game.gridOriginal[i] = make([]bool, len(linha))
-		for j, valor := range linha {
-			game.gridOriginal[i][j] = valor
-		}
+		copy(game.gridOriginal[i], linha)
 	}
 }
 
