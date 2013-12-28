@@ -61,20 +61,26 @@ func (game *Game) quantidadeVizinhos(linha, coluna int) int {
 		if linhaAtual < 0 || linhaAtual >= len(game.gridOriginal) {
 			continue
 		}		
-		for colunaAtual := coluna -1; colunaAtual <= coluna +1; colunaAtual++ {
-			if colunaAtual < 0 || colunaAtual >= len(game.gridOriginal[linhaAtual]) {
-				continue
-			}
-
-			if coluna == colunaAtual && linha == linhaAtual {
-				continue
-			}
-
-			if game.gridOriginal[linhaAtual][colunaAtual] {
-				vizinhos++
-			}
-		}
+		vizinhos += game.obterVizinhos(linhaAtual, linha, coluna)
 	}	
+	return vizinhos
+}
+
+func (game *Game) obterVizinhos(linhaAtual, linha, coluna int) int {
+	vizinhos := 0
+	for colunaAtual := coluna -1; colunaAtual <= coluna +1; colunaAtual++ {
+		if colunaAtual < 0 || colunaAtual >= len(game.gridOriginal[linhaAtual]) {
+			continue
+		}
+
+		if coluna == colunaAtual && linha == linhaAtual {
+			continue
+		}
+
+		if game.gridOriginal[linhaAtual][colunaAtual] {
+			vizinhos++
+		}
+	}
 	return vizinhos
 }
 
