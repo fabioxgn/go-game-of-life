@@ -105,7 +105,7 @@ func (game *Game) RandomSeed() {
 }
 
 func main() {
-	game := New(25, 25)
+	game := New(20, 75)
 	game.RandomSeed()
 	for {
 		print("\033[2J")
